@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as auth from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -7,14 +7,16 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    auth.getAuth().onAuthStateChanged((user) => {
-      setUser(user);
+    onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        setUser(user);
+        console.log(user);
+      }
     });
   }, []);
 
   const signOut = () => {
-    auth
-      .getAuth()
+    getAuth()
       .signOut()
       .then(() => {
         // Sign-out successful.
@@ -34,12 +36,14 @@ const Header = () => {
       </div>
       <div className="flex">
         <p className="text-white text-xl">{user?.email}</p>
-        <button
-          onClick={() => signOut()}
-          className="bg-white text-indigo-500 mx-3 px-3"
-        >
-          Logout
-        </button>
+        {user ? (
+          <button
+            onClick={() => signOut()}
+            className="bg-white text-indigo-500 mx-3 px-3"
+          >
+            Logout
+          </button>
+        ) : null}
       </div>
     </div>
   );
