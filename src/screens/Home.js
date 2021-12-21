@@ -45,7 +45,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!currentChat) return;
-
+    console.log(currentChat?.email);
     return (
       onSnapshot(
         query(
@@ -104,7 +104,11 @@ const Home = () => {
             {chats.map((chat, i) => (
               <button
                 key={i}
-                onClick={() => setCurrentChat(chat)}
+                onClick={() => {
+                  if (currentChat?.email === chat.email) return;
+                  setMessages([]);
+                  setCurrentChat(chat);
+                }}
                 className=" w-full h-14 border- py-3  px-3 border-b border-indigo-800 hover:cursor-pointer"
               >
                 <p className="text-left font-bold text-white">{chat.email}</p>
