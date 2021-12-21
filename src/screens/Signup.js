@@ -50,7 +50,7 @@ const Signup = () => {
 
   return (
     <div className="">
-      {/* <Header /> */}
+      <Header />
       <div className="h-screen flex items-center justify-center">
         <div className="shadow-xl h-1/2 w-1/3 rounded">
           <div className="shadow-xl h-10 bg-indigo-500 rounded py-2 text-white text-left px-2">

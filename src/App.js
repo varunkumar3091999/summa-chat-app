@@ -41,6 +41,8 @@ function App() {
         <Router>
           <Routes>
             <Route path="*" element={<Signin />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </Router>
       )}
