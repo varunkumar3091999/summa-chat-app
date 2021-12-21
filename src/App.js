@@ -14,18 +14,25 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         setAuthenticated(true);
+        setLoading(false);
         console.log(user);
       } else {
         setAuthenticated(false);
+        setLoading(false);
         console.log(user);
       }
     });
   }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="App h-screen ">
