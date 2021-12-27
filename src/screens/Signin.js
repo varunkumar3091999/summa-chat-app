@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import * as auth from "firebase/auth";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -68,6 +68,10 @@ const Signin = () => {
                 >
                   Sign In
                 </button>
+                <p>or</p>
+                <Link to={"/signup"} className="underline text-indigo-500">
+                  Sign Up
+                </Link>
               </div>
             </form>
           </div>

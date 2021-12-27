@@ -4,7 +4,7 @@ import * as auth from "firebase/auth";
 import { doc, setDoc, getFirestore, collection } from "firebase/firestore";
 
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import app from "../base";
 
 const Signup = () => {
@@ -85,13 +85,17 @@ const Signup = () => {
                   type="password"
                 />
               </div>
-              <div className="mt-9">
+              <div className="mt-9 justify-center">
                 <button
                   type="submit"
                   className="bg-indigo-500 px-3 py-2 rounded text-white font-semibold"
                 >
                   Sign Up
                 </button>
+                <p>or</p>
+                <Link to={"/signin"} className="underline text-indigo-500">
+                  Sign In
+                </Link>
               </div>
             </form>
           </div>
