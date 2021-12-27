@@ -11,7 +11,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [userName, setUserName] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const db = getFirestore(app);
 
@@ -19,6 +19,7 @@ const Signup = () => {
 
   const handleSignUpWithEmail = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     auth
       .createUserWithEmailAndPassword(auth.getAuth(), email, password)
@@ -106,9 +107,13 @@ const Signup = () => {
               <div className="mt-9 justify-center">
                 <button
                   type="submit"
-                  className="bg-indigo-500 px-3 py-2 rounded text-white font-semibold"
+                  className=" w-1/3 bg-indigo-500 px-3 py-2 rounded text-white font-semibold"
                 >
-                  Sign Up
+                  {loading ? (
+                    <div className="justify-center mx-auto h-5 w-5 border-2 border-white border-r-indigo-500 rounded-full animate-spin"></div>
+                  ) : (
+                    <p className="mx-auto">Sign Up</p>
+                  )}
                 </button>
                 <p>or</p>
                 <Link to={"/signin"} className="underline text-indigo-500">

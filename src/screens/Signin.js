@@ -7,11 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSignInWithEmail = (e) => {
     e.preventDefault();
+    setLoading(true);
     auth
       .signInWithEmailAndPassword(auth.getAuth(), email, password)
       .then((userCredential) => {
@@ -41,7 +43,6 @@ const Signin = () => {
             >
               <div>
                 <p className="text-3xl font-bold text-gray-500">Welcome!</p>
-                {/* <p className="text-xl font- text-gray-400">Create Account</p> */}
               </div>
               <div className="flex flex-col items-center  mt-7">
                 <input
@@ -64,12 +65,16 @@ const Signin = () => {
               <div className="mt-9">
                 <button
                   type="submit"
-                  className="bg-indigo-500 px-3 py-2 rounded text-white font-semibold"
+                  className="flex mx-auto  bg-indigo-500 w-1/3 px-3 py-2 rounded text-white font-semibold"
                 >
-                  Sign In
+                  {loading ? (
+                    <div className="justify-center mx-auto h-5 w-5 border-2 border-white border-r-indigo-500 rounded-full animate-spin"></div>
+                  ) : (
+                    <p className="mx-auto">Sign In</p>
+                  )}
                 </button>
                 <p>or</p>
-                <Link to={"/signup"} className="underline text-indigo-500">
+                <Link to={"/signup"} className="underline text-indigo-500 ">
                   Sign Up
                 </Link>
               </div>
