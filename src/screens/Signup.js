@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import * as auth from "firebase/auth";
 import { doc, setDoc, getFirestore, collection } from "firebase/firestore";
@@ -10,6 +10,7 @@ import app from "../base";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [userName, setUserName] = useState("");
 
   const db = getFirestore(app);
@@ -52,7 +53,7 @@ const Signup = () => {
     <div className="">
       <Header />
       <div className="h-screen flex items-center justify-center">
-        <div className="shadow-xl h-1/2 w-1/3 rounded">
+        <div className="shadow-xl h-4/12 w-1/3 rounded">
           <div className="shadow-xl h-10 bg-indigo-500 rounded py-2 text-white text-left px-2">
             Sign Up
           </div>
@@ -84,6 +85,23 @@ const Signup = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                 />
+              </div>
+
+              <div className="flex flex-col items-center">
+                <input
+                  className="border w-full h-10 rounded mt-7 px-2"
+                  placeholder="Confirm your password!"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  type="password"
+                />
+
+                {confirmPassword.length > 0 ? (
+                  password === confirmPassword ? null : (
+                    <p className="self-start text-red-500 absolute">
+                      Should match password.
+                    </p>
+                  )
+                ) : null}
               </div>
               <div className="mt-9 justify-center">
                 <button
