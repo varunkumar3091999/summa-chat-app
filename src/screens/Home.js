@@ -1,7 +1,5 @@
 import app from "../base";
 import {
-  doc,
-  setDoc,
   onSnapshot,
   where,
   addDoc,
@@ -9,7 +7,6 @@ import {
   getFirestore,
   collection,
   getDocs,
-  documentId,
 } from "firebase/firestore";
 
 import { getAuth } from "firebase/auth";
@@ -21,8 +18,6 @@ const Home = () => {
   const [currentChat, setCurrentChat] = useState();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState([]);
-  const [rec, setRec] = useState([]);
 
   const db = getFirestore(app);
   const currentUser = getAuth().currentUser;
@@ -41,6 +36,7 @@ const Home = () => {
     };
 
     fetchUsers();
+    //eslint-disable-next-line
   }, [currentUser]);
 
   useEffect(() => {
@@ -53,6 +49,7 @@ const Home = () => {
           where("recieverId", "==", currentChat?.authId)
         ),
         (querySnapShot) => {
+          console.log(querySnapShot.docChanges());
           querySnapShot.docChanges().forEach((change, i) => {
             setMessages((prevState) =>
               sortMessages([...prevState, change.doc.data()])
@@ -74,6 +71,7 @@ const Home = () => {
         }
       )
     );
+    //eslint-disable-next-line
   }, [currentChat]);
 
   const sortMessages = (messages) => {
@@ -82,13 +80,15 @@ const Home = () => {
 
   const sendMessage = async (e) => {
     e.preventDefault();
+    const msg = message;
+    setMessage("");
 
     await addDoc(collection(db, "chats", currentUser?.uid, "messages"), {
       sender: currentUser?.email,
       reciever: currentChat?.email,
       senderId: currentUser?.uid,
       recieverId: currentChat?.authId,
-      message,
+      message: msg,
       createdAt: new Date(),
     })
       .then((res) => setMessage(""))
@@ -119,19 +119,27 @@ const Home = () => {
 
         <div className="  w-9/12 absolute right-0 ml-auto self-end">
           {currentChat && (
-            <div className="overflow-y-scroll">
-              <div className="overflow-y-scroll">
-                <div className="h-full flex flex-col ">
+            <div className="">
+              <div className="">
+                <div className=" flex flex-col overflow-scroll">
                   {messages.map((mes, i) => (
                     <div
                       key={i}
-                      className={` flex p-3 h-10  ${
+                      className={`max-w-xs break-words text-wrap my-2 min-w-1/2 px-2 flex flex-col rounded ${
                         mes.senderId === currentUser?.uid
-                          ? " text-right  justify-end"
-                          : " text-left "
+                          ? "bg-indigo-500 self-end"
+                          : "bg-indigo-800 bg-opacity-75 self-start"
                       }`}
                     >
-                      {mes.message}
+                      <p
+                        className={` text-left ${
+                          mes.senderId === currentUser?.uid
+                            ? "text-white "
+                            : "text-white"
+                        }`}
+                      >
+                        {mes.message}
+                      </p>
                     </div>
                   ))}
                 </div>
