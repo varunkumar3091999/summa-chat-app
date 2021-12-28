@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import * as auth from "firebase/auth";
-import { doc, setDoc, getFirestore, collection } from "firebase/firestore";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
@@ -37,14 +37,12 @@ const Signup = () => {
           email: user.email,
           authId: user.uid,
         })
-          .then((res) => navigate("/", { replace: true }))
+          .then(() => navigate("/", { replace: true }))
           .catch((err) => console.log(err, "error"));
 
         // ...
       })
       .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
         console.log(error);
         // ..
       });
