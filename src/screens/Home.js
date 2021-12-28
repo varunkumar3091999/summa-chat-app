@@ -12,12 +12,14 @@ import {
 import { useEffect, useState, useContext } from "react";
 import Header from "../components/Header";
 import CurrentUserContext from "../context/currentUserContext";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const currentUser = useContext(CurrentUserContext);
   const db = getFirestore(app);
@@ -41,7 +43,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!currentChat) return;
-    console.log(currentChat?.email);
+
     return (
       onSnapshot(
         query(
@@ -68,6 +70,7 @@ const Home = () => {
               sortMessages([...prevState, change.doc.data()])
             );
           });
+          setLoading(false);
         }
       )
     );
@@ -121,28 +124,34 @@ const Home = () => {
           {currentChat && (
             <div className="">
               <div className="">
-                <div className=" flex flex-col overflow-scroll">
-                  {messages.map((mes, i) => (
-                    <div
-                      key={i}
-                      className={`max-w-xs break-words text-wrap my-2 min-w-1/2 px-2 flex flex-col rounded ${
-                        mes.senderId === currentUser?.uid
-                          ? "bg-indigo-500 self-end"
-                          : "bg-indigo-800 bg-opacity-75 self-start"
-                      }`}
-                    >
-                      <p
-                        className={` text-left ${
+                {loading ? (
+                  <div className="my-5">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <div className=" flex flex-col overflow-scroll">
+                    {messages.map((mes, i) => (
+                      <div
+                        key={i}
+                        className={`max-w-xs break-words text-wrap my-2 min-w-1/2 px-2 flex flex-col rounded ${
                           mes.senderId === currentUser?.uid
-                            ? "text-white "
-                            : "text-white"
+                            ? "bg-indigo-500 self-end"
+                            : "bg-indigo-800 bg-opacity-75 self-start"
                         }`}
                       >
-                        {mes.message}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                        <p
+                          className={` text-left ${
+                            mes.senderId === currentUser?.uid
+                              ? "text-white "
+                              : "text-white"
+                          }`}
+                        >
+                          {mes.message}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <form onSubmit={(e) => sendMessage(e)}>
                 <div className="w-full flex mb-2">
