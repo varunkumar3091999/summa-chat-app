@@ -9,9 +9,9 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-import { getAuth } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Header from "../components/Header";
+import CurrentUserContext from "../context/currentUserContext";
 
 const Home = () => {
   const [chats, setChats] = useState([]);
@@ -19,8 +19,8 @@ const Home = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
 
+  const currentUser = useContext(CurrentUserContext);
   const db = getFirestore(app);
-  const currentUser = getAuth().currentUser;
 
   useEffect(() => {
     const fetchUsers = async () => {
