@@ -122,6 +122,10 @@ const Home = () => {
     setSearchValue("");
     const q = query(collection(db, "users"), where("email", "==", value));
     const usersSnapShot = await getDocs(q);
+    if (usersSnapShot.docs.length === 0) {
+      console.log("user connot be found");
+      return;
+    }
     const newChat = usersSnapShot.docs[0]?.data();
     setChats([
       { reciever: newChat.email, recieverId: newChat?.authId },
