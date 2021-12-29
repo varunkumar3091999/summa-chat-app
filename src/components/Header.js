@@ -12,7 +12,6 @@ const Header = () => {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         setUser(user);
-        console.log(user);
       }
     });
   }, []);

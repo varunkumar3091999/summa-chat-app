@@ -18,12 +18,10 @@ function App() {
         setCurrentUser(user);
         setAuthenticated(true);
         setLoading(false);
-        console.log(user);
       } else {
         setCurrentUser(user);
         setAuthenticated(false);
         setLoading(false);
-        console.log(user);
       }
     });
   }, []);
